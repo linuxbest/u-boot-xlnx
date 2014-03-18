@@ -181,9 +181,9 @@
 	#define	CONFIG_ENV_IS_IN_FLASH	1
 	#define	CONFIG_ENV_SECT_SIZE	0x20000	/* 128K(one sector) for env */
 
-	#define	CONFIG_SYS_FLASH_PROTECTION
+	#undef CONFIG_SYS_FLASH_PROTECTION
 
-	#define	CONFIG_ENV_ADDR		XILINX_FLASH_START
+	#define	CONFIG_ENV_ADDR		XILINX_FLASH_START + 0x1000000 /* 16Mbyte is bitstream */
 	#define	CONFIG_ENV_SIZE		CONFIG_ENV_SECT_SIZE
 #else /* No flash memory at all */
 	/* ENV in RAM */
@@ -231,6 +231,7 @@
 /* FIXME: hack for zynq */
 #define CONFIG_CMD_IRQ
 #define CONFIG_CMD_ECHO
+#define CONFIG_CMD_MEMTEST
 
 #ifdef XILINX_GPIO_BASEADDR
 # define CONFIG_CMD_GPIO
@@ -316,6 +317,13 @@
 # undef CONFIG_MII
 # undef CONFIG_CMD_MII
 # undef CONFIG_PHYLIB
+#endif
+
+#if defined(CONFIG_XILINX_EMACLITE_MDC)
+# undef CONFIG_MII
+# undef CONFIG_CMD_MII
+# undef CONFIG_PHYLIB
+# define CONFIG_NETCONSOLE
 #endif
 
 #endif	/* __CONFIG_H */
